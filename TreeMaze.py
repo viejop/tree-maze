@@ -1,77 +1,193 @@
 class Node:
-    def __init__(self, data):
+    def __init__(self, x, y):
+        self.x = x  # x-coordinate
+        self.y = y  # y-coordinate
         self.left = None
+        self.center = None
         self.right = None
-        self.data = data
+        self.visited = set()
 
-    def insert(self, data):
-        if self.data:
-            if data < self.data:
-                if self.left is None:
-                    self.left = Node(data)
-                else:
-                    self.left.insert(data)
-            elif data > self.data:
-                if self.right is None:
-                    self.right = Node(data)
-                else:
-                    self.right.insert(data)
+    def insertCenter(self, x, y, depth = 1):
+        if (x, y) not in self.visited:
+            self.visited.add((x, y)) #mark coord at the depth
+        if self.center is None:
+            self.center = Node(x, y)
         else:
-            self.data = data
+            self.center.insertCenter(x, y, depth + 1) 
+        return self.center
 
-    def PrintTree(self):
+    def insertLeft(self, x, y, depth = 1):
+        if (x, y) not in self.visited:
+            self.visited.add((x, y))
+        if self.left is None:
+            self.left = Node(x, y)
+        else:
+            self.left.insertLeft(x, y, depth + 1)  
+        return self.left 
+
+    def insertRight(self, x, y, depth = 1):
+        if (x, y) not in self.visited:
+            self.visited.add((x, y))
+        if self.right is None:
+            self.right = Node(x, y)
+        else:
+            self.right.insertRight(x, y, depth + 1)
+        return self.right
+
+    def printTree(self, depth=0):
+
+        print('-' * depth + f"({self.x}, {self.y})")
         if self.left:
-            self.left.PrintTree()
-        print(self.data)
+            self.left.printTree(depth + 1)
+        if self.center:
+            self.center.printTree(depth + 1)
         if self.right:
-            self.right.PrintTree()
+            self.right.printTree(depth + 1)
+            
+root = Node(0,0)
+c01 = root.insertCenter(0,1) # c = coordinate
+c02 = c01.insertCenter(0,2) #insert at the last node
+c03 = c02.insertCenter(0,3)
+c04 = c03.insertCenter(0,4)
+c14 = c04.insertCenter(1,4)
 
+c13 = c14.insertLeft(1,3) #split at (1,4)
+c15 = c14.insertRight(1,5)
 
+c12 = c13.insertLeft(1,2) #split at (1,3)
+c23 = c13.insertRight(2,3)
 
+c05 = c15.insertLeft(0,5) #split at (1,5)
+c16 = c15.insertRight(1,6)
 
+c11 = c12.insertCenter(1,1)
+c22 = c23.insertRight(2,2)
+c24 = c23.insertLeft(2,4)
+c06 = c05.insertCenter(0,6)
+c26 = c16.insertCenter(2,6)
 
-class Node:
-    def __init__(self, coord):
-        self.left = None
-        self.right = None
-        self.data = coord
+c10 = c11.insertCenter(1,0)
+c21 = c11.insertLeft(2,1)
+c32 = c22.insertLeft(3,2)
+c25 = c24.insertCenter(2,5)
+c07 = c06.insertCenter(0,7)
+c27 = c26.insertLeft(2,7)
+c36 = c26.insertCenter(3,6)
 
-    def PrintTree(self):
-        if self.left:
-            self.left.PrintTree()
-        print(self.data)
-        if self.right:
-            self.right.PrintTree()
+c20 = c10.insertLeft(2,0)
+c31 = c21.insertCenter(3,1)
+c42 = c32.insertCenter(4,2)
+c17 = c07.insertRight(1,7)
+c37 = c27.insertRight(3,7)
+c35 = c36.insertCenter(3,5)
 
-def buildTree(coords):
-    if not coords:
-        return None
-    mid = len(coords) // 2
-    node = Node(coords[mid])
-    node.left = buildTree(coords[:mid])
-    node.right = buildTree(coords[mid+1:])
-    return node
+c30 = c20.insertCenter(3,0)
+c41 = c31.insertCenter(4,1)
+c52 = c42.insertCenter(5,2)
+c47 = c37.insertCenter(4,7)
 
-# Create 64 unique (x, y) coordinates (8x8 grid)
-coords = [(x, y) for x in range(8) for y in range(8)]
+c40 = c41.insertRight(4,0)
+c51 = c41.insertCenter(0,5
+c53 = c52.insertLeft(5,3)
+c57 = c47.insertCenter(5,7)
+#Path 2
+c62p2 = c52.insertCenter(6,2)
 
-# Sort coordinates (first by x, then y)
-coords.sort()
+c50 = c51.insertRight(5,0)
+c54 = c53.insertCenter(5,4)
+c56 = c57.insertRight(5,6)
+c67 = c57.insertCenter(6,7)
+#Path 2
+c63p2 = c62p2.insertLeft(6,3)
+c72p2 = c62p2.insertCenter(7,2)
 
+#increase depth
+c60 = c50.insertLeft(6,0)
+c77 = c67.insertCenter(7,7)
 
-root = buildTree(coords)
+#Path 2
+c64p2 = c63p2.insertCenter(6,4)
+c71p2 = c72p2.insertRight(7,1)
+c73p2 = c72p2.insertLeft(7,3)
 
-# Print the tree (in-order)
-root.PrintTree()
+#increase depth
+c61 = c60.insertLeft(6,1)
+c76 = c77.insertRight(7,6)
 
+#Path 2
+c65p2 = c64p2.insertCenter(6,5)
+c70p2 = c71p2.insertCenter(7,0)
+c74p2 = c73p2.insertCenter(7,4)
 
+#increase depth
+c66 = c76.insertRight(6,6)
 
-# Use the insert method to add nodes
-root = Node(12)
-root.insert(1)
-root.insert(14)
-root.insert(3)
-root.PrintTree()
+#Path 3
+c62p3 = c61.insertCenter(6,2)
+
+#Path 2
+c55p2 = c65p2.insertLeft(5,5)
+c75p2 = c65p2.insertRight(7,5)
+
+#increase depth
+
+#Path 1
+c65p1 = c66.insertLeft(6,5)
+
+#Path 2
+c45p2 = c55p2.insertCenter(4,5)
+
+#Path 3
+c63p3 = c62p3.insertCenter(6,3)
+c72p3 = c62p3.insertRight(7,2)
+
+#increase depth
+
+#Path 1
+c55p1 = c65p1.insertRight(5,5)
+c75p1 = c65p1.insertLeft(7,5)
+
+#Path 2
+c44p2 = c45p2.insertLeft(4,4)
+c46p2 = c45p2.insertRight(4,6)
+
+#Path 3
+c64p3 = c63p3.insertCenter(6,4)
+c71p3 = c72p3.insertRight(7,1)
+c73p3 = c72p3.insertLeft(7,3)
+
+#increase depth
+
+#Path 1
+c45p1 = c55p1.insertCenter(4,5)
+
+#Path 3
+c65p3 = c64p3.insertCenter(6,5)
+c70p3 = c71p3.insertCenter(7,0)
+c74p3 = c73p3.insertCenter(7,4)
+
+#increase depth
+
+#Path 1
+c44p1 = c45p1.insertLeft(4,4)
+c46p1 = c45p1.insertRight(4,6)
+
+#Path 3
+c55p3 = c65p3.insertLeft(5,5)
+c75p3 = c65p3.insertRight(7,5)
+
+#increase depth
+
+#Path 3
+c45p3 = c55p3.insertCenter(4,5)
+
+#increase depth
+
+#Path 3
+c44p3 = c45p3.insertLeft(4,4)
+c46p3 = c45p3.insertRight(4,6)
+
+root.printTree()
 
 
 
