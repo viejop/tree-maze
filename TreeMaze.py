@@ -6,16 +6,18 @@ class Node:
         self.center = None
         self.right = None
         self.visited = set()
-
+        
+#inserts center of denoted node while increasing depth
     def insertCenter(self, x, y, depth = 1):
         if (x, y) not in self.visited:
             self.visited.add((x, y)) #mark coord at the depth
         if self.center is None:
             self.center = Node(x, y)
         else:
-            self.center.insertCenter(x, y, depth + 1) 
+            self.center.insertCenter(x, y, depth + 1) # depth counter 
         return self.center
-
+        
+#inserts left of denoted node while increasing depth 
     def insertLeft(self, x, y, depth = 1):
         if (x, y) not in self.visited:
             self.visited.add((x, y))
@@ -25,6 +27,7 @@ class Node:
             self.left.insertLeft(x, y, depth + 1)  
         return self.left 
 
+#inserts right of denoted node while increasing depth 
     def insertRight(self, x, y, depth = 1):
         if (x, y) not in self.visited:
             self.visited.add((x, y))
@@ -34,8 +37,8 @@ class Node:
             self.right.insertRight(x, y, depth + 1)
         return self.right
 
+#logic for printing the tree
     def printTree(self, depth=0):
-
         print('-' * depth + f"({self.x}, {self.y})")
         if self.left:
             self.left.printTree(depth + 1)
@@ -45,6 +48,7 @@ class Node:
             self.right.printTree(depth + 1)
             
 root = Node(0,0)
+# Path 1
 c01 = root.insertCenter(0,1) # c = coordinate
 c02 = c01.insertCenter(0,2) #insert at the last node
 c03 = c02.insertCenter(0,3)
@@ -57,7 +61,7 @@ c15 = c14.insertRight(1,5)
 c12 = c13.insertLeft(1,2) #split at (1,3)
 c23 = c13.insertRight(2,3)
 
-c05 = c15.insertLeft(0,5) #split at (1,5)
+c05 = c15.insertLeft(0,5) #split at (1,5), etc.
 c16 = c15.insertRight(1,6)
 
 c11 = c12.insertCenter(1,1)
@@ -90,6 +94,7 @@ c40 = c41.insertRight(4,0)
 c51 = c41.insertCenter(0,5
 c53 = c52.insertLeft(5,3)
 c57 = c47.insertCenter(5,7)
+
 #Path 2
 c62p2 = c52.insertCenter(6,2)
 
@@ -101,7 +106,6 @@ c67 = c57.insertCenter(6,7)
 c63p2 = c62p2.insertLeft(6,3)
 c72p2 = c62p2.insertCenter(7,2)
 
-#increase depth
 c60 = c50.insertLeft(6,0)
 c77 = c67.insertCenter(7,7)
 
@@ -110,7 +114,6 @@ c64p2 = c63p2.insertCenter(6,4)
 c71p2 = c72p2.insertRight(7,1)
 c73p2 = c72p2.insertLeft(7,3)
 
-#increase depth
 c61 = c60.insertLeft(6,1)
 c76 = c77.insertRight(7,6)
 
@@ -119,7 +122,6 @@ c65p2 = c64p2.insertCenter(6,5)
 c70p2 = c71p2.insertCenter(7,0)
 c74p2 = c73p2.insertCenter(7,4)
 
-#increase depth
 c66 = c76.insertRight(6,6)
 
 #Path 3
@@ -128,8 +130,6 @@ c62p3 = c61.insertCenter(6,2)
 #Path 2
 c55p2 = c65p2.insertLeft(5,5)
 c75p2 = c65p2.insertRight(7,5)
-
-#increase depth
 
 #Path 1
 c65p1 = c66.insertLeft(6,5)
@@ -140,8 +140,6 @@ c45p2 = c55p2.insertCenter(4,5)
 #Path 3
 c63p3 = c62p3.insertCenter(6,3)
 c72p3 = c62p3.insertRight(7,2)
-
-#increase depth
 
 #Path 1
 c55p1 = c65p1.insertRight(5,5)
@@ -156,8 +154,6 @@ c64p3 = c63p3.insertCenter(6,4)
 c71p3 = c72p3.insertRight(7,1)
 c73p3 = c72p3.insertLeft(7,3)
 
-#increase depth
-
 #Path 1
 c45p1 = c55p1.insertCenter(4,5)
 
@@ -165,8 +161,6 @@ c45p1 = c55p1.insertCenter(4,5)
 c65p3 = c64p3.insertCenter(6,5)
 c70p3 = c71p3.insertCenter(7,0)
 c74p3 = c73p3.insertCenter(7,4)
-
-#increase depth
 
 #Path 1
 c44p1 = c45p1.insertLeft(4,4)
@@ -176,12 +170,8 @@ c46p1 = c45p1.insertRight(4,6)
 c55p3 = c65p3.insertLeft(5,5)
 c75p3 = c65p3.insertRight(7,5)
 
-#increase depth
-
 #Path 3
 c45p3 = c55p3.insertCenter(4,5)
-
-#increase depth
 
 #Path 3
 c44p3 = c45p3.insertLeft(4,4)
