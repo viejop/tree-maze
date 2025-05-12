@@ -91,7 +91,7 @@ c52 = c42.insertCenter(5,2)
 c47 = c37.insertCenter(4,7)
 
 c40 = c41.insertRight(4,0)
-c51 = c41.insertCenter(0,5
+c51 = c41.insertCenter(0,5)
 c53 = c52.insertLeft(5,3)
 c57 = c47.insertCenter(5,7)
 
